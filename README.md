@@ -1,18 +1,17 @@
-# A simple compiler for the language of arithmetic 
+## A simple compiler learning tool for the language of arithmetic 
 
 
 TODO: 
 - Fix Division. 
 
-
-Usage:
+### Usage:
 
 Run math with an inFile. 
 
-infile.math example:
+```infile.math``` example:
 
 ```bash
-(5 * 2)
+  (5 * 2)
 ```
 
 ```bash
@@ -23,49 +22,49 @@ infile.math example:
 Output:
 
 ```bash
-Input Arithmetic Expression:
-(5 * 2)
+   Input Arithmetic Expression:
+   (5 * 2)
 
-Lexical Analysis Output:
-LPAREN 
-NUMBER 5 
-MULTIPLY 
-NUMBER 2 
-RPAREN 
+   Lexical Analysis Output:
+   LPAREN 
+   NUMBER 5 
+   MULTIPLY 
+   NUMBER 2 
+   RPAREN 
 
-Abstract Syntax Tree:
+   Abstract Syntax Tree:
 
-(*)
-├──5
-├──2
+   (*)
+   ├──5
+   ├──2
 
-Executable generated: ./ArithmeticOut
+   Executable generated: ./ArithmeticOut
 
-Assembly code generated in ./ArithmeticOut
+   Assembly code generated in ./ArithmeticOut
 ```
 
 
 Assembly Out File:
 
 ```bash
-    .data
-result: .asciz "Result: %ld\n"
-    .text
-    .globl _start
-_start:
-    mov $5, %rax
-    mov %rax, %rbx
-    mov $2, %rax
-    imulq %rbx, %rax
+      .data
+   result: .asciz "Result: %ld\n"
+      .text
+      .globl _start
+   _start:
+      mov $5, %rax
+      mov %rax, %rbx
+      mov $2, %rax
+      imulq %rbx, %rax
 
-movq %rax, %rsi
-lea result(%rip), %rdi
-xor %rax, %rax
-sub $8, %rsp     # Align stack for printf call
-call _printf     # Call printf
-add $8, %rsp     # Restore stack after call
+   movq %rax, %rsi
+   lea result(%rip), %rdi
+   xor %rax, %rax
+   sub $8, %rsp     # Align stack for printf call
+   call _printf     # Call printf
+   add $8, %rsp     # Restore stack after call
 
-xor %rdi, %rdi
-call _exit
+   xor %rdi, %rdi
+   call _exit
 
 ```

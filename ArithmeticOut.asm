@@ -7,6 +7,10 @@ _start:
     mov %rax, %rbx
     mov $2, %rax
     imulq %rbx, %rax
+    mov %rax, %rbx
+    mov $1, %rax
+    sub %rax, %rbx
+    mov %rbx, %rax
 
 movq %rax, %rsi
 lea result(%rip), %rdi
