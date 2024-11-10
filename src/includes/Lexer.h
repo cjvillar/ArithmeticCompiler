@@ -40,4 +40,5 @@ class Lexer {
   void advance();
   void skipWhitespace();
   int parseNumber();
+  char peek() const;
 };

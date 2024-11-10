@@ -4,7 +4,7 @@
 TODO:  
    - Fix CodeGen, only works with simple expressions for now, but hey it works! 
    - Fix Division. 
-   - Handle negative numbers 
+   - Fix multiple nested expressions 
 
 Nice To Have:
    - Make Window Compatable

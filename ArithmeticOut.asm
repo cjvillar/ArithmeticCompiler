@@ -3,9 +3,9 @@ result: .asciz "Result: %ld\n"
     .text
     .globl _start
 _start:
-    mov $19, %rax
+    mov $-1, %rax
     mov %rax, %rbx
-    mov $48, %rax
+    mov $-200, %rax
     sub %rax, %rbx
     mov %rbx, %rax
 
