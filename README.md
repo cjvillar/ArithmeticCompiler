@@ -1,8 +1,18 @@
 ## A simple compiler learning tool for the language of arithmetic 
 
 
-TODO: 
-- Fix Division. 
+TODO:  
+   - Fix CodeGen, only works with simple expressions for now, but hey it works! 
+   - Fix Division. 
+   - Handle negative numbers 
+
+Nice To Have:
+   - Make Window Compatable
+
+Test Assembly:
+   ```bash
+   gcc -o ArithmeticOut ArithmeticOut.asm -e _start  
+   ```
 
 ### Usage:
 
