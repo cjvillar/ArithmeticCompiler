@@ -86,9 +86,9 @@ class BinOpExprAST : public ExprAST {
   void print(std::string indent) override {
     //returns string op instead of enum
     std::cout << indent << tokenKindToString(getKind()) << "\n";
-    std::cout << indent << "├──";
+    std::cout << indent << "├── ";
     left->print("   " + indent);
-    std::cout << indent << "├──";
+    std::cout << indent << "├── ";
     right->print("    " + indent);
   }
 
