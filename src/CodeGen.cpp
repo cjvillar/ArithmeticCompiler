@@ -12,25 +12,21 @@ void CodeGenerator::visit(ExprAST& exprAST) {
   // No specific code for generic ExprAST, meant for derived classes
 }
 
-// assembly generator for a numbers
+// Assembly generator for a numbers
 void CodeGenerator::visit(NumExprAST& numExprAST) {
-  out << "    mov $" << numExprAST.getValue() << ", %rax\n";
+  static bool firstNum = true;
+  if (firstNum) {
+    out << "    mov $" << numExprAST.getValue() << ", %rax\n";
+    firstNum = false;
+  } else {
+    out << "    mov $" << numExprAST.getValue() << ", %rbx\n";
+  }
 }
-
-// // assembly generator for a binary operations
-// void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
-//   //Visit the left and right subtrees and generate code
-//   binOpExprAST.getLeft()->accept(*this);
-//   out << "    push %rax\n";  // Save the result of the left operand to the
-//   stack
-
-//   binOpExprAST.getRight()->accept(*this);
-//   out << "    pop %rbx\n";  // Retrieve the left operand from the stack
 
 void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
   // Visit the left operand and generate code
   binOpExprAST.getLeft()->accept(*this);  // Generate code for the left operand
-  out << "    mov %rax, %rbx\n";
+  // out << "    mov %rax, %rbx\n";
 
   // Visit the right operand and generate code
   binOpExprAST.getRight()->accept(
@@ -43,8 +39,9 @@ void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
       break;
 
     case TokenKind::MINUS:
-      out << "    sub %rax, %rbx\n";
-      out << "    mov %rbx, %rax\n";  // Move the result back to %rax
+      out << "    sub %rbx, %rax\n";  // Subtraction assumin left is > right, I
+                                      // need a better fix
+      out << "    mov %rax, %rbx\n";  // Move the result back to %rbx
       break;
 
     case TokenKind::MULTIPLY:
@@ -52,7 +49,7 @@ void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
       break;
 
     case TokenKind::DIVIDE:
-      out << "    cqto\n";  // Convert quadword in %rax to octoword in %rdx:%rax
+      out << "    cqto    #Convert quadword in %rax to octoword in %rdx:%rax\n";  // Convert quadword in %rax to octoword in %rdx:%rax
       out << "    idivq %rbx\n";  // Divide %rax by %rbx, quotient in %rax,
                                   // remainder in %rdx need to fix
       break;
@@ -70,10 +67,10 @@ void CodeGenerator::generateAssembly(ExprAST& root) {
   out << "    .globl _start\n";
   out << "_start:\n";
 
-  // generates code by visiting the AST's root node (calc function)
+  // Generates code by visiting the AST's root node (calc function)
   root.accept(*this);
 
-  // returning from the function
+  // Returning from the function
   out << "\n";
   out << "movq %rax, %rsi\n";
   out << "lea result(%rip), %rdi\n";
@@ -84,7 +81,7 @@ void CodeGenerator::generateAssembly(ExprAST& root) {
   out << "call _printf     # Call printf\n";
   out << "add $8, %rsp     # Restore stack after call\n";
 
-  // Exit program 
+  // Exit program
   out << "\n";
   out << "xor %rdi, %rdi\n";
   out << "call _exit\n";

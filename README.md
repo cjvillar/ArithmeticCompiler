@@ -2,8 +2,8 @@
 
 
 TODO:  
-   - Fix CodeGen, only works with simple expressions for now, but hey it works! 
-   - Fix Division. 
+   - Fix Subtraction CodeGen, currently I assum L > R and set registers accordingly, this is not correct and messes with other oprations, for example, ((2 * 6) - 1) produces -11 while ((2 * 6) + -1) produces the correct ouput of 11.
+   
    - Fix multiple nested expressions 
 
 Nice To Have:

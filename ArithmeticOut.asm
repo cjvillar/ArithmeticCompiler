@@ -3,11 +3,11 @@ result: .asciz "Result: %ld\n"
     .text
     .globl _start
 _start:
-    mov $-1, %rax
-    mov %rax, %rbx
-    mov $-200, %rax
-    sub %rax, %rbx
-    mov %rbx, %rax
+    mov $2, %rax
+    mov $6, %rbx
+    imulq %rbx, %rax
+    mov $-1, %rbx
+    add %rbx, %rax
 
 movq %rax, %rsi
 lea result(%rip), %rdi
