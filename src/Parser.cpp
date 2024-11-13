@@ -20,8 +20,8 @@ void Parser::parse() {
         handleRightParenthesis();
         break;
       default:
-        // For all other tokens (assumed to be operators), push the token
-        // onto the operator stack.
+        // For all other tokens (assumed to be operators or LPAREN), push the token
+        // onto the operator stack. 
         handleOperator(token);
         break;
     }

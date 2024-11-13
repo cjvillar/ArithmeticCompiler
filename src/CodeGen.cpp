@@ -5,6 +5,9 @@
 // generate
 // x86 instead of an AST
 // https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
+//https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture
+//https://www.tutorialspoint.com/assembly_programming/assembly_arithmetic_instructions.htm
+
 
 CodeGenerator::CodeGenerator(std::ostream& out) : out(out) {}
 
@@ -12,7 +15,7 @@ void CodeGenerator::visit(ExprAST& exprAST) {
   // No specific code for generic ExprAST, meant for derived classes
 }
 
-// Assembly generator for a numbers
+//Assembly generator for a numbers
 void CodeGenerator::visit(NumExprAST& numExprAST) {
   static bool firstNum = true;
   if (firstNum) {
@@ -20,23 +23,27 @@ void CodeGenerator::visit(NumExprAST& numExprAST) {
     firstNum = false;
   } else {
     out << "    mov $" << numExprAST.getValue() << ", %rbx\n";
+    firstNum = true; //reset back to first num
   }
 }
+ // out << "    mov $" << numExprAST.getValue() << ", %rax\n";
+//}
 
 void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
   // Visit the left operand and generate code
   binOpExprAST.getLeft()->accept(*this);  // Generate code for the left operand
-  // out << "    mov %rax, %rbx\n";
+  //out << "    mov %rbx, %rax\n";
 
   // Visit the right operand and generate code
   binOpExprAST.getRight()->accept(
       *this);  // Generate code for the right operand
+      // out << "    mov %rbx, %rax\n";
 
   // Create Assembly code based on token
   switch (binOpExprAST.getKind()) {
     case TokenKind::PLUS:
-      out << "    add %rbx, %rax\n";
-      break;
+      out << "    add %rbx, %rax\n"; //try not hardcoding the registers
+      break; //ad
 
     case TokenKind::MINUS:
       out << "    sub %rbx, %rax\n";  // Subtraction assumin left is > right, I
@@ -59,7 +66,7 @@ void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
   }
 }
 
-// Method to start assembly code gen (lots of biolerplate not sure if correct)
+// Method to start assembly code gen (lots of biolerplate)
 void CodeGenerator::generateAssembly(ExprAST& root) {
   out << "    .data\n";
   out << "result: .asciz \"Result: %ld\\n\"\n";  // out str format
@@ -70,7 +77,7 @@ void CodeGenerator::generateAssembly(ExprAST& root) {
   // Generates code by visiting the AST's root node (calc function)
   root.accept(*this);
 
-  // Returning from the function
+  // Returning from the function (more boilerplate)
   out << "\n";
   out << "movq %rax, %rsi\n";
   out << "lea result(%rip), %rdi\n";

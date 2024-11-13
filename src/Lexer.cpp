@@ -74,7 +74,7 @@ void Lexer::skipWhitespace() {
 int Lexer::parseNumber() {
   std::string numStr;
 
-  // Handle optional leading minus sign
+  // Handle negative numbers
   if (currentChar == '-') {
     numStr += currentChar;
     advance();
@@ -93,7 +93,7 @@ int Lexer::parseNumber() {
 
   return std::stoi(numStr);
 }
-// Check for - followed by a int
+// Check for - followed by number
 char Lexer::peek() const {
   return (pos + 1 >= text.size()) ? '\0' : text[pos + 1];
 }

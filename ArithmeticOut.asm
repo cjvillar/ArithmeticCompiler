@@ -3,10 +3,12 @@ result: .asciz "Result: %ld\n"
     .text
     .globl _start
 _start:
+    mov $3, %rax
+    mov $1, %rbx
+    sub %rbx, %rax
+    mov %rax, %rbx
     mov $2, %rax
-    mov $6, %rbx
-    imulq %rbx, %rax
-    mov $-1, %rbx
+    mov %rbx, %rax
     add %rbx, %rax
 
 movq %rax, %rsi

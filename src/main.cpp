@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
   sleep(2);
 
   // lexing step
-  system("clear");  // clear screen mac/linux for clean output
+  //system("clear");  // clear screen 
   cout << "\033[\033[1;32mLexical Analysis Output:\033[0m"
        << "\n";  // color via ANSI
                  // Escape Codes
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     cout << "\033[\033[1;32mExecutable generated: ./ArithmeticOut\033[0m" << "\n"
          << endl;
 
-    cout << "\033[\033[1;32mAssembly code generated in ./ArithmeticOut\033[0m" << "\n"
+    cout << "\033[\033[1;32mAssembly code generated in ./ArithmeticOut.asm\033[0m" << "\n"
          << endl;
   } catch (const exception& e) {
     cerr << "Error in parsing for assembly: " << e.what() << "\n";

@@ -1,13 +1,15 @@
 ## A simple compiler learning tool for the language of arithmetic 
 
 
-TODO:  
-   - Fix Subtraction CodeGen, currently I assum L > R and set registers accordingly, this is not correct and messes with other oprations, for example, ((2 * 6) - 1) produces -11 while ((2 * 6) + -1) produces the correct ouput of 11.
-   
+TODO:
+   - Fix Subtraction CodeGen, currently I assume L > R and set registers accordingly, this is not correct and messes with other operations, for example, ((2 * 6) - 1) produces -11 while ((2 * 6) + -1) produces the correct output of 11
+
    - Fix multiple nested expressions 
 
 Nice To Have:
-   - Make Window Compatable
+   - Add flag for custom name output. 
+   - Make Window Compatible
+
 
 Test Assembly:
    ```bash
