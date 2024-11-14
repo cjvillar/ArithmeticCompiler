@@ -5,9 +5,8 @@
 // generate
 // x86 instead of an AST
 // https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
-//https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture
-//https://www.tutorialspoint.com/assembly_programming/assembly_arithmetic_instructions.htm
-
+// https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture
+// https://www.tutorialspoint.com/assembly_programming/assembly_arithmetic_instructions.htm
 
 CodeGenerator::CodeGenerator(std::ostream& out) : out(out) {}
 
@@ -15,7 +14,7 @@ void CodeGenerator::visit(ExprAST& exprAST) {
   // No specific code for generic ExprAST, meant for derived classes
 }
 
-//Assembly generator for a numbers
+// Assembly generator for a numbers
 void CodeGenerator::visit(NumExprAST& numExprAST) {
   static bool firstNum = true;
   if (firstNum) {
@@ -23,32 +22,30 @@ void CodeGenerator::visit(NumExprAST& numExprAST) {
     firstNum = false;
   } else {
     out << "    mov $" << numExprAST.getValue() << ", %rbx\n";
-    firstNum = true; //reset back to first num
+    firstNum = true;  // reset back to first num
   }
 }
- // out << "    mov $" << numExprAST.getValue() << ", %rax\n";
-//}
+
 
 void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
   // Visit the left operand and generate code
   binOpExprAST.getLeft()->accept(*this);  // Generate code for the left operand
-  //out << "    mov %rbx, %rax\n";
+  //out << "    mov %rax, %rcx\n";
 
   // Visit the right operand and generate code
   binOpExprAST.getRight()->accept(
       *this);  // Generate code for the right operand
-      // out << "    mov %rbx, %rax\n";
+  //out << "    mov %rcx, %rax\n";
 
   // Create Assembly code based on token
   switch (binOpExprAST.getKind()) {
     case TokenKind::PLUS:
-      out << "    add %rbx, %rax\n"; //try not hardcoding the registers
-      break; //ad
+      out << "    add %rax, %rbx\n";
+      out << "    mov %rbx, %rax\n"; //move result to rax 
+      break;
 
     case TokenKind::MINUS:
-      out << "    sub %rbx, %rax\n";  // Subtraction assumin left is > right, I
-                                      // need a better fix
-      out << "    mov %rax, %rbx\n";  // Move the result back to %rbx
+      out << "    sub %rbx, %rax\n";
       break;
 
     case TokenKind::MULTIPLY:
@@ -65,6 +62,7 @@ void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
       throw std::runtime_error("Unsupported binary operation.");
   }
 }
+
 
 // Method to start assembly code gen (lots of biolerplate)
 void CodeGenerator::generateAssembly(ExprAST& root) {

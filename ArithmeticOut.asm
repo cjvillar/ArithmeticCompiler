@@ -3,13 +3,13 @@ result: .asciz "Result: %ld\n"
     .text
     .globl _start
 _start:
-    mov $3, %rax
-    mov $1, %rbx
-    sub %rbx, %rax
-    mov %rax, %rbx
+    mov $8, %rax
+    mov $2, %rbx
+    cqto    #Convert quadword in %rax to octoword in %rdx:%rax
+    idivq %rbx
     mov $2, %rax
+    add %rax, %rbx
     mov %rbx, %rax
-    add %rbx, %rax
 
 movq %rax, %rsi
 lea result(%rip), %rdi
