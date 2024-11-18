@@ -62,14 +62,6 @@ void Lexer::skipWhitespace() {
   }
 }
 
-// int Lexer::parseNumber() {
-//   std::string numStr;
-//   while (currentChar != '\0' && std::isdigit(currentChar)) {
-//     numStr += currentChar;
-//     advance();
-//   }
-//   return std::stoi(numStr);
-// }
 
 int Lexer::parseNumber() {
   std::string numStr;

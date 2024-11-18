@@ -1,9 +1,7 @@
 #include "includes/config.h"
 
-// The CodeGenerator only (almost) works for x86 assembly.
 // this is a derived AST class , so that I can reuse the methods in AST but to
-// generate
-// x86 instead of an AST
+// generate x86 instead of an AST
 // https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
 // https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture
 // https://www.tutorialspoint.com/assembly_programming/assembly_arithmetic_instructions.htm
@@ -16,36 +14,30 @@ void CodeGenerator::visit(ExprAST& exprAST) {
 
 // Assembly generator for a numbers
 void CodeGenerator::visit(NumExprAST& numExprAST) {
-  static bool firstNum = true;
-  if (firstNum) {
-    out << "    mov $" << numExprAST.getValue() << ", %rax\n";
-    firstNum = false;
-  } else {
-    out << "    mov $" << numExprAST.getValue() << ", %rbx\n";
-    firstNum = true;  // reset back to first num
-  }
+  out << "    mov $" << numExprAST.getValue() << ", %rax\n";
 }
-
 
 void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
   // Visit the left operand and generate code
   binOpExprAST.getLeft()->accept(*this);  // Generate code for the left operand
-  //out << "    mov %rax, %rcx\n";
+
+  out << "    push %rax\n";  // save left operand result
 
   // Visit the right operand and generate code
   binOpExprAST.getRight()->accept(
       *this);  // Generate code for the right operand
-  //out << "    mov %rcx, %rax\n";
+
+  out << "    pop %rbx\n";  // get left operand from the stack
 
   // Create Assembly code based on token
   switch (binOpExprAST.getKind()) {
     case TokenKind::PLUS:
-      out << "    add %rax, %rbx\n";
-      out << "    mov %rbx, %rax\n"; //move result to rax 
+      out << "    add %rbx, %rax\n";
       break;
 
     case TokenKind::MINUS:
-      out << "    sub %rbx, %rax\n";
+      out << "    sub %rax, %rbx\n";
+      out << "    mov %rbx, %rax\n";
       break;
 
     case TokenKind::MULTIPLY:
@@ -53,16 +45,16 @@ void CodeGenerator::visit(BinOpExprAST& binOpExprAST) {
       break;
 
     case TokenKind::DIVIDE:
-      out << "    cqto    #Convert quadword in %rax to octoword in %rdx:%rax\n";  // Convert quadword in %rax to octoword in %rdx:%rax
-      out << "    idivq %rbx\n";  // Divide %rax by %rbx, quotient in %rax,
-                                  // remainder in %rdx need to fix
+      out << "    mov %rax, %rcx\n";
+      out << "    mov %rbx, %rax\n";
+      out << "    cqto    #Convert quadword in %rax to octoword in %rdx:%rax\n";
+      out << "    idivq %rcx\n";
       break;
 
     default:
       throw std::runtime_error("Unsupported binary operation.");
   }
 }
-
 
 // Method to start assembly code gen (lots of biolerplate)
 void CodeGenerator::generateAssembly(ExprAST& root) {
