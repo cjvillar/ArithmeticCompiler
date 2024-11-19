@@ -42,7 +42,11 @@ Token Lexer::getNextToken() {
       case ')':
         advance();
         return Token(RPAREN);
-      default:
+      case '#':
+        handleComment();
+        advance();
+        return Token(COMM);
+        default:
         advance();
         return Token(INVALID);
     }
@@ -62,6 +66,20 @@ void Lexer::skipWhitespace() {
   }
 }
 
+void Lexer::handleComment() {
+  // Comments must have format: # this is a comment #
+  if (currentChar == '#') {
+    advance(); // Move past initial '#'
+    while (currentChar != '#' && currentChar != '\0') { // Handle until closing '#' or EOF
+      advance();
+    }
+    if (currentChar == '#') { // Get closing '#' 
+      advance();
+    } else {
+      throw std::invalid_argument("Comment Missing Closing '#' ");
+    }
+  }
+}
 
 int Lexer::parseNumber() {
   std::string numStr;

@@ -6,6 +6,7 @@ enum TokenKind {
     DIVIDE,
     LPAREN,
     RPAREN,
+    COMM,
     INVALID,
     END
 };

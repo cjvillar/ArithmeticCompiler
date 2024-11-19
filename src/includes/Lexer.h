@@ -23,6 +23,8 @@ class Lexer {
         return "LPAREN";
       case TokenKind::RPAREN:
         return "RPAREN";
+      case TokenKind::COMM:
+        return "COMM";
       case TokenKind::INVALID:
         return "INVALID";
       case TokenKind::END:
@@ -38,6 +40,7 @@ class Lexer {
   int numberValue;
 
   void advance();
+  void handleComment();
   void skipWhitespace();
   int parseNumber();
   char peek() const;
