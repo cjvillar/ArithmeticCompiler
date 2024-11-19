@@ -14,6 +14,10 @@ void Parser::parse() {
         // Handle numeric literals by creating a NumExprAST node.
         handleNumber(token);
         break;
+      case TokenKind::COMM:
+        // Handle numeric literals by creating a NumExprAST node.
+       
+        break;
       case TokenKind::RPAREN:
         // Handle closing parentheses, which triggers the creation of
         // a binary expression node by combining previously parsed operands.

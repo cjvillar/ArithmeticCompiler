@@ -3,25 +3,18 @@ result: .asciz "Result: %ld\n"
     .text
     .globl _start
 _start:
-    mov $41, %rax
+    mov $5, %rax
     push %rax
-    mov $378, %rax
-    pop %rbx
-    add %rbx, %rax
+    mov $20, %rax
     push %rax
-    mov $19, %rax
-    push %rax
-    mov $54, %rax
-    push %rax
-    mov $6, %rax
+    mov $8, %rax
     pop %rbx
     sub %rax, %rbx
     mov %rbx, %rax
     pop %rbx
-    mov %rax, %rcx
-    mov %rbx, %rax
-    cqto    #Convert quadword in %rax to octoword in %rdx:%rax
-    idivq %rcx
+    add %rbx, %rax
+    push %rax
+    mov $4, %rax
     pop %rbx
     imulq %rbx, %rax
 
