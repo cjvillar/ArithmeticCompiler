@@ -3,20 +3,19 @@ result: .asciz "Result: %ld\n"
     .text
     .globl _start
 _start:
-    mov $5, %rax
+    mov $2, %rax
     push %rax
-    mov $20, %rax
-    push %rax
-    mov $8, %rax
-    pop %rbx
-    sub %rax, %rbx
-    mov %rbx, %rax
-    pop %rbx
-    add %rbx, %rax
-    push %rax
-    mov $4, %rax
+    mov $3, %rax
     pop %rbx
     imulq %rbx, %rax
+    push %rax
+    mov $4, %rax
+    push %rax
+    mov $5, %rax
+    pop %rbx
+    imulq %rbx, %rax
+    pop %rbx
+    add %rbx, %rax
 
 movq %rax, %rsi
 lea result(%rip), %rdi
