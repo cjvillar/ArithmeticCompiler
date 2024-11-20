@@ -5,6 +5,7 @@
 class Lexer {
  public:
   Lexer(const std::string& text);
+  std::unordered_map<std::string, int> varMap;
 
   Token getNextToken();
   std::string getTokenKindString(TokenKind kind) {
@@ -25,6 +26,10 @@ class Lexer {
         return "RPAREN";
       case TokenKind::COMM:
         return "COMM";
+      case TokenKind::VAR:
+        return "VAR";
+      case TokenKind::EQ:
+        return "EQ";
       case TokenKind::INVALID:
         return "INVALID";
       case TokenKind::END:
@@ -43,5 +48,6 @@ class Lexer {
   void handleComment();
   void skipWhitespace();
   int parseNumber();
+  void handleVar();
   char peek() const;
 };

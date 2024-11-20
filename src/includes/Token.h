@@ -7,6 +7,8 @@ enum TokenKind {
     LPAREN,
     RPAREN,
     COMM,
+    VAR,
+    EQ,
     INVALID,
     END
 };

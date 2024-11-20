@@ -15,8 +15,8 @@ void Parser::parse() {
         handleNumber(token);
         break;
       case TokenKind::COMM:
-        // Handle numeric literals by creating a NumExprAST node.
-       
+        break;
+      case TokenKind::EQ:
         break;
       case TokenKind::RPAREN:
         // Handle closing parentheses, which triggers the creation of

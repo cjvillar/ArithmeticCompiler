@@ -23,6 +23,11 @@ Token Lexer::getNextToken() {
       return Token(NUMBER, numberValue);
     }
 
+    if (isalpha(currentChar)) {
+          handleVar();
+          return Token(VAR);
+    }
+
     switch (currentChar) {
       case '+':
         advance();
@@ -44,10 +49,12 @@ Token Lexer::getNextToken() {
         return Token(RPAREN);
       case '#':
         handleComment();
-        advance();
         return Token(COMM);
-        default:
+       case '=':
         advance();
+        return Token(EQ);
+      default:
+        advance();  // Move forward for unrecognized characters
         return Token(INVALID);
     }
   }
@@ -69,11 +76,12 @@ void Lexer::skipWhitespace() {
 void Lexer::handleComment() {
   // Comments must have format: # this is a comment #
   if (currentChar == '#') {
-    advance(); // Move past initial '#'
-    while (currentChar != '#' && currentChar != '\0') { // Handle until closing '#' or EOF
+    advance();  // Move past initial '#'
+    while (currentChar != '#' &&
+           currentChar != '\0') {  // Handle until closing '#' or EOF
       advance();
     }
-    if (currentChar == '#') { // Get closing '#' 
+    if (currentChar == '#') {  // Get closing '#'
       advance();
     } else {
       throw std::invalid_argument("Comment Missing Closing '#' ");
@@ -106,4 +114,33 @@ int Lexer::parseNumber() {
 // Check for - followed by number
 char Lexer::peek() const {
   return (pos + 1 >= text.size()) ? '\0' : text[pos + 1];
+}
+
+void Lexer::handleVar() {
+  // handle variables
+  if (isalpha(currentChar)) {
+    std::string varName(1, currentChar);
+    advance();
+
+    if (currentChar == '=') {
+      advance();  // Move past '='
+
+      std::string valueStr;
+      // while (isdigit(currentChar)) {
+      //   valueStr += currentChar;
+      //   advance();
+      // }
+      if (isdigit(currentChar)){
+          valueStr += currentChar;
+          int value = std::stoi(valueStr);
+          varMap[varName] = value;
+      }
+      // if (!valueStr.empty()) {
+      //   // how to re assign or use int inplace of var.
+      //   // need to handle the var.
+      //   int value = std::stoi(valueStr);  // converts in to str
+      //   varMap[varName] = value;          // int stored in hashmap with key var
+      // }
+    }
+  }
 }

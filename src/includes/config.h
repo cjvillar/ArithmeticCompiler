@@ -13,6 +13,7 @@
 #include <fstream>
 #include <cstdlib> //used for system()
 #include <unistd.h>  //sleep on mac & linux main.cpp
+#include <unordered_map>
 
 #include <stdexcept> //CodeGen exeption handling
 
