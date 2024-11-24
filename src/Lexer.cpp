@@ -50,7 +50,6 @@ Token Lexer::getNextToken() {
       case '#':
         advance();
         handleComment();
-        advance();
         return Token(COMM);
        case '=':
         advance();
